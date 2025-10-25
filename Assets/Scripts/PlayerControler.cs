@@ -28,17 +28,17 @@ public class PlayerControler : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             transform.Translate(moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             transform.Translate(-moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             jump();
         }

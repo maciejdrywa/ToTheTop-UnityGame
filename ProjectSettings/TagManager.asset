@@ -2,8 +2,10 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - LevelExit
+  - LevelFall
   layers:
   - Default
   - TransparentFX
@@ -11,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Ground
   - 
   - 
   - 
@@ -41,3 +43,23 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 4181022511
+    locked: 0
+  - name: Tilemap
+    uniqueID: 2991057879
+    locked: 0
+  - name: Props
+    uniqueID: 211294077
+    locked: 0
+  - name: Platforms
+    uniqueID: 2946344867
+    locked: 0
+  - name: Player and enemies
+    uniqueID: 1815456721
+    locked: 0
+  - name: Foreground
+    uniqueID: 1371851577
+    locked: 0
+  m_RenderingLayers:
+  - Default
