@@ -5,17 +5,24 @@ public class PlayerControler : MonoBehaviour
     [Header("Movement Settings")]
     [Range(0.1f, 20f)] [SerializeField] private float moveSpeed = 0.1f;
     [Range(0.1f, 20f)][SerializeField] private float jumpForce = 0.1f;
-    [Space(10)]
 
     private Rigidbody2D rb;
+    private Animator animator;
 
     [SerializeField] private LayerMask groundLayer;
 
     private float rayLength = 0.25f;
 
+    private bool isRunning = false;
+
+    private bool isFacingRight = true;
+
+    private Vector3 theScale;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,22 +38,46 @@ public class PlayerControler : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             transform.Translate(moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
+            isRunning = true;
+            if (!isFacingRight)
+            {
+                Flip();
+            }
         }
-
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             transform.Translate(-moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
+            isRunning = true;
+            if (isFacingRight)
+            {
+                Flip();
+            }
+        }
+        else
+        {
+            isRunning = false;
         }
 
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
-            jump();
+            Jump();
         }
 
         Debug.DrawRay(transform.position, Vector2.down * rayLength, Color.red, 0.2f, false);
+
+        animator.SetBool("isGrounded", IsGrounded());
+        animator.SetBool("isRunning", isRunning);
+    }
+    
+    void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 
-    void jump()
+    void Jump()
     {
         if (IsGrounded())
         {
@@ -71,6 +102,12 @@ public class PlayerControler : MonoBehaviour
         if (collision.gameObject.CompareTag("LevelFall"))
         {
             Debug.Log("Player fall");
+        }
+
+        if (collision.gameObject.CompareTag("Bonus"))
+        {
+            Debug.Log("Bonus");
+            collision.gameObject.SetActive(false);
         }
     }
 
