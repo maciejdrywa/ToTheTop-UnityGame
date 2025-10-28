@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerControler : MonoBehaviour
 {
@@ -19,10 +20,15 @@ public class PlayerControler : MonoBehaviour
 
     private Vector3 theScale;
 
+    private Vector2 startPosition;
+
+
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        startPosition = transform.position;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -108,6 +114,17 @@ public class PlayerControler : MonoBehaviour
         {
             Debug.Log("Bonus");
             collision.gameObject.SetActive(false);
+        }
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            if (transform.position.y > collision.transform.position.y)
+            {
+                Debug.Log("Killed an enemy");
+            }else
+            {
+                transform.position = startPosition;
+            }
         }
     }
 

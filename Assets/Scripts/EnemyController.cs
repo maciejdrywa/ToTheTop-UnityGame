@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
@@ -68,9 +69,29 @@ public class EnemyController : MonoBehaviour
     {
         transform.Translate(moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
     }
-    
+
     void MoveLeft()
     {
         transform.Translate(-moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
+    }
+
+    IEnumerator KillOnAnimation()
+    {
+        yield return new WaitForSeconds(0.4f);
+        gameObject.SetActive(false);
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (collision.transform.position.y > transform.position.y)
+            {
+                Debug.Log("Killed an enemy");
+                animator.SetBool("isDead", true);
+                StartCoroutine(KillOnAnimation());
+            }
+
+        }
     }
 }
