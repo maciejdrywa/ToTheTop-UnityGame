@@ -22,6 +22,8 @@ public class PlayerControler : MonoBehaviour
 
     private Vector2 startPosition;
 
+    private GameState gameState;
+
 
 
     void Awake()
@@ -29,6 +31,7 @@ public class PlayerControler : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
+        gameState = GameManager.instance.currentGameState;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -40,7 +43,44 @@ public class PlayerControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameState != GameState.GAME)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                GameManager.instance.InGame();
+                gameState = GameManager.instance.currentGameState;
+            }
+            return;
+        } else
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                GameManager.instance.PauseGame();
+                gameState = GameManager.instance.currentGameState;
+                return;
+            }
+        }
 
+
+        HandleMovement();
+
+        Debug.DrawRay(transform.position, Vector2.down * rayLength, Color.red, 0.2f, false);
+
+        animator.SetBool("isGrounded", IsGrounded());
+        animator.SetBool("isRunning", isRunning);
+    }
+
+    void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+    
+
+    void HandleMovement()
+    {
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             transform.Translate(moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
@@ -68,19 +108,6 @@ public class PlayerControler : MonoBehaviour
         {
             Jump();
         }
-
-        Debug.DrawRay(transform.position, Vector2.down * rayLength, Color.red, 0.2f, false);
-
-        animator.SetBool("isGrounded", IsGrounded());
-        animator.SetBool("isRunning", isRunning);
-    }
-    
-    void Flip()
-    {
-        isFacingRight = !isFacingRight;
-        theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
     }
 
     void Jump()
@@ -112,8 +139,8 @@ public class PlayerControler : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Bonus"))
         {
-            Debug.Log("Bonus");
             collision.gameObject.SetActive(false);
+            GameManager.instance.AddPoints(10);
         }
 
         if (collision.gameObject.CompareTag("Enemy"))
