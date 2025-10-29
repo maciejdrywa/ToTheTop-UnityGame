@@ -24,6 +24,7 @@ public class EnemyController : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
+        startPositionX = transform.position.x;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -88,6 +89,7 @@ public class EnemyController : MonoBehaviour
             if (collision.transform.position.y > transform.position.y)
             {
                 Debug.Log("Killed an enemy");
+                moveSpeed = 0;
                 animator.SetBool("isDead", true);
                 StartCoroutine(KillOnAnimation());
             }

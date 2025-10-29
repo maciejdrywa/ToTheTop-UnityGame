@@ -1,3 +1,4 @@
+using System.Transactions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,7 +10,7 @@ public class PlayerControler : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator animator;
-
+    public Animator textAnimator;
     [SerializeField] private LayerMask groundLayer;
 
     private float rayLength = 0.25f;
@@ -22,49 +23,37 @@ public class PlayerControler : MonoBehaviour
 
     private Vector2 startPosition;
 
-    private GameState gameState;
-
+    private GameState gameState; 
 
 
     void Awake()
     {
+        
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
-        gameState = GameManager.instance.currentGameState;
+        textAnimator = GameObject.Find("EngGameText").GetComponent<Animator>();
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        gameState = GameManager.instance.currentGameState;
+    
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameState != GameState.GAME)
+        gameState = GameManager.instance.currentGameState;
+
+        if(gameState == GameState.GAME)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                GameManager.instance.InGame();
-                gameState = GameManager.instance.currentGameState;
-            }
-            return;
-        } else
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                GameManager.instance.PauseGame();
-                gameState = GameManager.instance.currentGameState;
-                return;
-            }
+            HandleMovement();
+
         }
 
-
-        HandleMovement();
-
-        Debug.DrawRay(transform.position, Vector2.down * rayLength, Color.red, 0.2f, false);
 
         animator.SetBool("isGrounded", IsGrounded());
         animator.SetBool("isRunning", isRunning);
@@ -130,11 +119,13 @@ public class PlayerControler : MonoBehaviour
         if (collision.gameObject.CompareTag("LevelExit"))
         {
             Debug.Log("Game Over");
+            textAnimator.SetTrigger("EndGame");
         }
 
         if (collision.gameObject.CompareTag("LevelFall"))
         {
             Debug.Log("Player fall");
+            transform.position = startPosition;
         }
 
         if (collision.gameObject.CompareTag("Bonus"))
