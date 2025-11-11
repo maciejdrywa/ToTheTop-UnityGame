@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using TMPro;
+using UnityEngine.UI;
 
 public enum GameState { GAME, PAUSE_MENU, LEVEL_COMPLETED, GAME_OVER }
 
@@ -11,6 +13,23 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     private int score = 0;
+    public TMP_Text scoreText;
+
+    private int keysFound = 0;
+
+    public int maxKeysNumber = 3;
+
+    public bool keysComplited = false;
+
+    public Image[] keysTab;
+
+    private int lives = 3;
+
+    public Canvas inGameCanvas;
+
+    
+
+    
 
 
     void Awake()
@@ -22,14 +41,15 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Duplicated Game Manager", gameObject);
         }
+
+        scoreText.text = score.ToString();
+
+        foreach (Image image in keysTab)
+        {
+            image.color = Color.gray;
+        }
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -54,6 +74,14 @@ public class GameManager : MonoBehaviour
     void SetGameState(GameState newState)
     {
         currentGameState = newState;
+        if (currentGameState == GameState.GAME)
+        {
+            inGameCanvas.enabled = true;
+        }
+        else
+        {
+            inGameCanvas.enabled = false;
+        }
     }
 
     public void PauseGame()
@@ -79,6 +107,23 @@ public class GameManager : MonoBehaviour
     public void AddPoints(int points)
     {
         score += points;
+        scoreText.text = score.ToString();
         Debug.Log("Score: " + score);
+    }
+
+    public void addKeys(Color color)
+    {
+        keysTab[keysFound].color = color;
+        keysFound += 1;
+        if (keysFound == maxKeysNumber)
+        {
+            keysComplited = true;
+            Debug.Log("Zebrano wszytskie klucze");
+        }
+    }
+
+    public void addLives(int livesNumber)
+    {
+        lives += livesNumber;
     }
 }
