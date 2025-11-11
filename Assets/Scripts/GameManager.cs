@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using TMPro;
 using UnityEngine.UI;
 
@@ -8,7 +7,7 @@ public enum GameState { GAME, PAUSE_MENU, LEVEL_COMPLETED, GAME_OVER }
 public class GameManager : MonoBehaviour
 {
 
-    public GameState currentGameState = GameState.PAUSE_MENU;
+    public GameState currentGameState = GameState.GAME;
 
     public static GameManager instance;
 
@@ -48,6 +47,7 @@ public class GameManager : MonoBehaviour
         {
             image.color = Color.gray;
         }
+
     }
 
 

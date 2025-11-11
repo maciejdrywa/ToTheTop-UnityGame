@@ -7609,7 +7609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4290b588129429f813ba04f528233c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: 1
+  currentGameState: 0
   scoreText: {fileID: 946085793}
   maxKeysNumber: 3
   keysComplited: 0
