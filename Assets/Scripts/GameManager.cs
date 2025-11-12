@@ -34,6 +34,13 @@ public class GameManager : MonoBehaviour
 
     public Canvas pausedMenuCanvas;
 
+    private float timer = 0f;
+    private int minutes;
+    private int seconds;
+    public TMP_Text timerText;
+
+
+
     
 
     
@@ -71,7 +78,8 @@ public class GameManager : MonoBehaviour
                 InGame();
             }
 
-        } else
+        }
+        else
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -79,6 +87,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (currentGameState == GameState.GAME)
+        {
+            timer += Time.deltaTime;
+            minutes = (int)timer / 60;
+            seconds = (int)timer % 60;
+            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
+        
     }
 
     void SetGameState(GameState newState)
