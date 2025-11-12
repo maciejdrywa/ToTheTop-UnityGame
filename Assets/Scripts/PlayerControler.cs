@@ -35,14 +35,12 @@ public class PlayerControler : MonoBehaviour
 
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         gameState = GameManager.instance.currentGameState;
     
     }
 
-    // Update is called once per frame
     void Update()
     {
         gameState = GameManager.instance.currentGameState;
@@ -122,7 +120,7 @@ public class PlayerControler : MonoBehaviour
                 Debug.Log("End Level");
             } else
             {
-                Debug.Log("Nie masz wystarczaj¹cej liczby kluczy");
+                Debug.Log("Nie masz wystarczajï¿½cej liczby kluczy");
             }
             
         }
@@ -132,7 +130,7 @@ public class PlayerControler : MonoBehaviour
             Debug.Log("Player fall");
             transform.position = startPosition;
             GameManager.instance.addLives(-1);
-            Debug.Log("Stracono 1 ¿ycie");
+            Debug.Log("Stracono 1 ï¿½ycie");
         }
 
         if (collision.gameObject.CompareTag("Bonus"))
@@ -150,7 +148,7 @@ public class PlayerControler : MonoBehaviour
             {
                 transform.position = startPosition;
                 GameManager.instance.addLives(-1);
-                Debug.Log("Stracono 1 ¿ycie");
+                Debug.Log("Stracono 1 ï¿½ycie");
             }
         }
 
@@ -166,7 +164,7 @@ public class PlayerControler : MonoBehaviour
         {
             collision.gameObject.SetActive(false);
             GameManager.instance.addLives(1);
-            Debug.Log("Dodano 1 ¿ycie");
+            Debug.Log("Dodano 1 ï¿½ycie");
         }
     }
 

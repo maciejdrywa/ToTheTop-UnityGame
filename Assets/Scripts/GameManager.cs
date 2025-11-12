@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public enum GameState { GAME, PAUSE_MENU, LEVEL_COMPLETED, GAME_OVER }
 
@@ -22,15 +24,19 @@ public class GameManager : MonoBehaviour
 
     public Image[] keysTab;
 
-    private int lives = 3;
+
+    private int maxLives = 3;
+    private int lives;
+
+    public Image[] livesTab;
 
     public Canvas inGameCanvas;
 
-    
+    public Canvas pausedMenuCanvas;
 
     
 
-
+    
     void Awake()
     {
         if (instance == null)
@@ -41,6 +47,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Duplicated Game Manager", gameObject);
         }
 
+        lives = maxLives;
         scoreText.text = score.ToString();
 
         foreach (Image image in keysTab)
@@ -48,6 +55,9 @@ public class GameManager : MonoBehaviour
             image.color = Color.gray;
         }
 
+        
+
+        pausedMenuCanvas.enabled = false;
     }
 
 
@@ -77,10 +87,12 @@ public class GameManager : MonoBehaviour
         if (currentGameState == GameState.GAME)
         {
             inGameCanvas.enabled = true;
+            pausedMenuCanvas.enabled = false;
         }
         else
         {
             inGameCanvas.enabled = false;
+            pausedMenuCanvas.enabled = true;
         }
     }
 
@@ -124,6 +136,34 @@ public class GameManager : MonoBehaviour
 
     public void addLives(int livesNumber)
     {
-        lives += livesNumber;
+        
+        int newLives = Mathf.Clamp(lives + livesNumber, 0, maxLives);
+
+        
+        if (newLives == lives) return;
+
+        lives = newLives;
+
+        for (int i = 0; i < livesTab.Length; i++)
+        {
+            livesTab[i].enabled = (i < lives);
+        }
+
+        Debug.Log("Lives: " + lives);
+    }
+
+    public void OnResumeButtonPressed()
+    {
+        InGame();
+    }
+
+    public void OnRestartButtonPressed()
+    {
+        SceneManager.LoadScene("Level1");
+    }
+
+    public void OnMainMenuButtonPressed()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
