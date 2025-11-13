@@ -118,6 +118,8 @@ public class PlayerControler : MonoBehaviour
             if (GameManager.instance.keysComplited)
             {
                 Debug.Log("End Level");
+                GameManager.instance.AddPoints(100 * GameManager.instance.Lives);
+                GameManager.instance.LevelCompleted();
             } else
             {
                 Debug.Log("Nie masz wystarczaj�cej liczby kluczy");

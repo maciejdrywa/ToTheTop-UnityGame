@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     private int maxLives = 3;
     private int lives;
+    public int Lives {get {return lives;}}
 
     public Image[] livesTab;
 
@@ -38,6 +39,8 @@ public class GameManager : MonoBehaviour
     private int minutes;
     private int seconds;
     public TMP_Text timerText;
+
+    public Canvas levelCompletedCanvas;
 
 
 
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour
 
         
 
-        pausedMenuCanvas.enabled = false;
+        InGame();
     }
 
 
@@ -104,11 +107,19 @@ public class GameManager : MonoBehaviour
         {
             inGameCanvas.enabled = true;
             pausedMenuCanvas.enabled = false;
+            levelCompletedCanvas.enabled = false;
         }
-        else
+        else if (currentGameState == GameState.PAUSE_MENU)
         {
             inGameCanvas.enabled = false;
             pausedMenuCanvas.enabled = true;
+            levelCompletedCanvas.enabled = false;
+        }
+        else if (currentGameState == GameState.LEVEL_COMPLETED)
+        {
+            inGameCanvas.enabled = false;
+            pausedMenuCanvas.enabled = false;
+            levelCompletedCanvas.enabled = true;
         }
     }
 
