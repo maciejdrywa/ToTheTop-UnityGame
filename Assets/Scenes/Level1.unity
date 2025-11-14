@@ -192,8 +192,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -113944785
-  m_SortingLayer: 1
+  m_SortingLayerID: 211294077
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4aadbdeb8a80c664a8fd117c907b5f3f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -8663,6 +8663,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1242175366973683289, guid: 654de004c10f44095b7fd9528e2b4b4f, type: 3}
   m_PrefabInstance: {fileID: 2030436627}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1700342152 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8366580574806390352, guid: 654de004c10f44095b7fd9528e2b4b4f, type: 3}
+  m_PrefabInstance: {fileID: 2030436627}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1703649159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9294,6 +9305,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1277228817666294887, guid: 1fddd91bff0b6407f8b2e583dac03916, type: 3}
   m_PrefabInstance: {fileID: 1857187857}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1977642801 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8366580574806390352, guid: 654de004c10f44095b7fd9528e2b4b4f, type: 3}
+  m_PrefabInstance: {fileID: 1024228064}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2030436627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9516,6 +9538,8 @@ MonoBehaviour:
   pausedMenuCanvas: {fileID: 1397826905}
   timerText: {fileID: 1680697504}
   levelCompletedCanvas: {fileID: 526650652}
+  scoreLabel: {fileID: 1700342152}
+  bestScoreLabel: {fileID: 1977642801}
 --- !u!4 &2109082930
 Transform:
   m_ObjectHideFlags: 0

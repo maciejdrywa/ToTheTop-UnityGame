@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using JetBrains.Annotations;
 
 public enum GameState { GAME, PAUSE_MENU, LEVEL_COMPLETED, GAME_OVER }
 
@@ -41,6 +42,11 @@ public class GameManager : MonoBehaviour
     public TMP_Text timerText;
 
     public Canvas levelCompletedCanvas;
+    private string keyHighScore = "HighScoreLevel1";
+
+    public TMP_Text scoreLabel;
+    public TMP_Text bestScoreLabel;
+
 
 
 
@@ -66,7 +72,10 @@ public class GameManager : MonoBehaviour
         }
 
         
-
+        if (!PlayerPrefs.HasKey(keyHighScore))
+        {
+            PlayerPrefs.SetInt(keyHighScore, 0);
+        }
         InGame();
     }
 
@@ -117,6 +126,22 @@ public class GameManager : MonoBehaviour
         }
         else if (currentGameState == GameState.LEVEL_COMPLETED)
         {
+            Scene currentScene = SceneManager.GetActiveScene();
+            int highScore = PlayerPrefs.GetInt(keyHighScore, 0);
+            if (currentScene.name == "Level1")
+            {
+                if (highScore < score)
+                {
+                    highScore = score;
+                    PlayerPrefs.SetInt(keyHighScore, highScore);
+                    PlayerPrefs.Save();
+                }
+            }
+
+            scoreLabel.text = string.Format("Score: {0:D4}", score);
+            bestScoreLabel.text = string.Format("Best score: {0:D4}", highScore);
+
+
             inGameCanvas.enabled = false;
             pausedMenuCanvas.enabled = false;
             levelCompletedCanvas.enabled = true;
