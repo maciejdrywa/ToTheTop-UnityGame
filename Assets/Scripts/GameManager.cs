@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public Image[] keysTab;
 
 
-    private int maxLives = 4;
+    private int maxLives = 3;
     private int lives;
     public int Lives {get {return lives;}}
 
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Duplicated Game Manager", gameObject);
         }
 
-        lives = 3;
+        lives = maxLives;
         scoreText.text = score.ToString();
 
         foreach (Image image in keysTab)
@@ -77,10 +77,6 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(keyHighScore, 0);
         }
         InGame();
-        for (int i = 0; i < lives; i++)
-        {
-            livesTab[i].gameObject.SetActive(true);
-        }
     }
 
 
@@ -200,23 +196,12 @@ public class GameManager : MonoBehaviour
 
         lives = newLives;
 
-        updateLivesBar();
+        for (int i = 0; i < livesTab.Length; i++)
+        {
+            livesTab[i].enabled = (i < lives);
+        }
 
         Debug.Log("Lives: " + lives);
-    }
-    public void updateLivesBar()
-    {
-        for (int i = 0; i < maxLives; i++)
-        {
-            if (i < lives)
-            {
-                livesTab[i].gameObject.SetActive(true);
-            }
-            else
-            {
-                livesTab[i].gameObject.SetActive(false);
-            }
-        }
     }
 
     public void OnResumeButtonPressed()
