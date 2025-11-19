@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     private bool isFacingRight = false;
 
     private float startPositionX;
-    private float moveRange = 1.0f;
+    [SerializeField]  private float moveRange = 1.0f;
 
     private bool isMovingRight = false;
 

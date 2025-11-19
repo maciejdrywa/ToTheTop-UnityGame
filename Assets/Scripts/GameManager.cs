@@ -1,18 +1,58 @@
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using JetBrains.Annotations;
 
 public enum GameState { GAME, PAUSE_MENU, LEVEL_COMPLETED, GAME_OVER }
 
 public class GameManager : MonoBehaviour
 {
 
-    public GameState currentGameState = GameState.PAUSE_MENU;
+    public GameState currentGameState = GameState.GAME;
 
     public static GameManager instance;
 
     private int score = 0;
+    public TMP_Text scoreText;
+
+    private int keysFound = 0;
+
+    public int maxKeysNumber = 3;
+
+    public bool keysComplited = false;
+
+    public Image[] keysTab;
 
 
+    private int maxLives = 4;
+    private int lives;
+    public int Lives {get {return lives;}}
+
+    public Image[] livesTab;
+
+    public Canvas inGameCanvas;
+
+    public Canvas pausedMenuCanvas;
+
+    private float timer = 0f;
+    private int minutes;
+    private int seconds;
+    public TMP_Text timerText;
+
+    public Canvas levelCompletedCanvas;
+    private string keyHighScore = "HighScoreLevel1";
+
+    public TMP_Text scoreLabel;
+    public TMP_Text bestScoreLabel;
+
+
+
+
+    
+
+    
     void Awake()
     {
         if (instance == null)
@@ -22,14 +62,27 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Duplicated Game Manager", gameObject);
         }
+
+        lives = 3;
+        scoreText.text = score.ToString();
+
+        foreach (Image image in keysTab)
+        {
+            image.color = Color.gray;
+        }
+
+        
+        if (!PlayerPrefs.HasKey(keyHighScore))
+        {
+            PlayerPrefs.SetInt(keyHighScore, 0);
+        }
+        InGame();
+        for (int i = 0; i < lives; i++)
+        {
+            livesTab[i].gameObject.SetActive(true);
+        }
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -41,7 +94,8 @@ public class GameManager : MonoBehaviour
                 InGame();
             }
 
-        } else
+        }
+        else
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -49,11 +103,53 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (currentGameState == GameState.GAME)
+        {
+            timer += Time.deltaTime;
+            minutes = (int)timer / 60;
+            seconds = (int)timer % 60;
+            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
+        
     }
 
     void SetGameState(GameState newState)
     {
         currentGameState = newState;
+        if (currentGameState == GameState.GAME)
+        {
+            inGameCanvas.enabled = true;
+            pausedMenuCanvas.enabled = false;
+            levelCompletedCanvas.enabled = false;
+        }
+        else if (currentGameState == GameState.PAUSE_MENU)
+        {
+            inGameCanvas.enabled = false;
+            pausedMenuCanvas.enabled = true;
+            levelCompletedCanvas.enabled = false;
+        }
+        else if (currentGameState == GameState.LEVEL_COMPLETED)
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            int highScore = PlayerPrefs.GetInt(keyHighScore, 0);
+            if (currentScene.name == "Level1")
+            {
+                if (highScore < score)
+                {
+                    highScore = score;
+                    PlayerPrefs.SetInt(keyHighScore, highScore);
+                    PlayerPrefs.Save();
+                }
+            }
+
+            scoreLabel.text = string.Format("Score: {0:D4}", score);
+            bestScoreLabel.text = string.Format("Best score: {0:D4}", highScore);
+
+
+            inGameCanvas.enabled = false;
+            pausedMenuCanvas.enabled = false;
+            levelCompletedCanvas.enabled = true;
+        }
     }
 
     public void PauseGame()
@@ -79,6 +175,62 @@ public class GameManager : MonoBehaviour
     public void AddPoints(int points)
     {
         score += points;
+        scoreText.text = score.ToString();
         Debug.Log("Score: " + score);
+    }
+
+    public void addKeys(Color color)
+    {
+        keysTab[keysFound].color = color;
+        keysFound += 1;
+        if (keysFound == maxKeysNumber)
+        {
+            keysComplited = true;
+            Debug.Log("Zebrano wszytskie klucze");
+        }
+    }
+
+    public void addLives(int livesNumber)
+    {
+        
+        int newLives = Mathf.Clamp(lives + livesNumber, 0, maxLives);
+
+        
+        if (newLives == lives) return;
+
+        lives = newLives;
+
+        updateLivesBar();
+
+        Debug.Log("Lives: " + lives);
+    }
+    public void updateLivesBar()
+    {
+        for (int i = 0; i < maxLives; i++)
+        {
+            if (i < lives)
+            {
+                livesTab[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                livesTab[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void OnResumeButtonPressed()
+    {
+        InGame();
+    }
+
+    public void OnRestartButtonPressed()
+    {
+        SceneManager.LoadScene("Level1");
+    }
+
+    public void OnMainMenuButtonPressed()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

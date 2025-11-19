@@ -1,5 +1,6 @@
 using System.Transactions;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class PlayerControler : MonoBehaviour
@@ -10,7 +11,6 @@ public class PlayerControler : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator animator;
-    public Animator textAnimator;
     [SerializeField] private LayerMask groundLayer;
 
     private float rayLength = 0.25f;
@@ -32,18 +32,15 @@ public class PlayerControler : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
-        textAnimator = GameObject.Find("EngGameText").GetComponent<Animator>();
 
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         gameState = GameManager.instance.currentGameState;
     
     }
 
-    // Update is called once per frame
     void Update()
     {
         gameState = GameManager.instance.currentGameState;
@@ -118,14 +115,24 @@ public class PlayerControler : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("LevelExit"))
         {
-            Debug.Log("Game Over");
-            textAnimator.SetTrigger("EndGame");
+            if (GameManager.instance.keysComplited)
+            {
+                Debug.Log("End Level");
+                GameManager.instance.AddPoints(100 * GameManager.instance.Lives);
+                GameManager.instance.LevelCompleted();
+            } else
+            {
+                Debug.Log("Nie masz wystarczaj�cej liczby kluczy");
+            }
+            
         }
 
         if (collision.gameObject.CompareTag("LevelFall"))
         {
             Debug.Log("Player fall");
             transform.position = startPosition;
+            GameManager.instance.addLives(-1);
+            Debug.Log("Stracono 1 �ycie");
         }
 
         if (collision.gameObject.CompareTag("Bonus"))
@@ -142,7 +149,24 @@ public class PlayerControler : MonoBehaviour
             }else
             {
                 transform.position = startPosition;
+                GameManager.instance.addLives(-1);
+                Debug.Log("Stracono 1 �ycie");
             }
+        }
+
+
+        if (collision.gameObject.CompareTag("Key"))
+        {
+            collision.gameObject.SetActive(false);
+            GameManager.instance.addKeys(collision.gameObject.GetComponent<SpriteRenderer>().color);
+            Debug.Log("Zebrano klucz");
+        }
+
+        if (collision.gameObject.CompareTag("Heart"))
+        {
+            collision.gameObject.SetActive(false);
+            GameManager.instance.addLives(1);
+            Debug.Log("Dodano 1 �ycie");
         }
     }
 
