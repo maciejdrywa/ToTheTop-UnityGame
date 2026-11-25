@@ -10,9 +10,8 @@
 
 </div>
 
-[![To The Top gameplay preview](docs/gameplay-preview.jpg)](to-the-top-gameplay.mp4)
+https://github.com/user-attachments/assets/f2b9f4b4-ad1e-4388-9ba6-65ab6b487289
 
-[▶ Watch the full gameplay (MP4)](to-the-top-gameplay.mp4)
 
 ## About
 
