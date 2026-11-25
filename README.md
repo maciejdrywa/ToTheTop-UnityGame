@@ -1,8 +1,8 @@
 <div align="center">
 
-# To The Top
+<img src="docs/to-the-top-logo.png" alt="To The Top" width="180">
 
-### Collect the keys. Dodge the enemies. Find your way to the top.
+### Collect the keys, dodge the enemies and find your way to the top.
 
 [![Unity](https://img.shields.io/badge/Unity-6000.0.38f1-222222?logo=unity&logoColor=white)](https://unity.com/releases/editor/whats-new/6000.0.38)
 [![C#](https://img.shields.io/badge/Language-C%23-512BD4)](Assets/Scripts)
@@ -37,6 +37,7 @@ Explore the level, collect all three keys and reach the exit. Pick up bonuses to
 | Move left | `A` or `←` |
 | Move right | `D` or `→` |
 | Jump | `Space` or left mouse button |
+| Dash | `Shift` |
 | Open / close the pause menu | `Esc` |
 
 Jumping requires the player to be on the ground.
